@@ -15,7 +15,7 @@ from requests.exceptions import HTTPError
 
 from .utils import read_full_refresh, read_incremental, safe_max
 
-API_VERSION = 3
+API_VERSION = 2
 
 
 class JiraStream(HttpStream, ABC):

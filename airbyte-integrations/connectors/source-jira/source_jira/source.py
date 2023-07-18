@@ -87,14 +87,8 @@ class SourceJira(AbstractSource):
             config = self._validate_and_transform(config)
             authenticator = self.get_authenticator(config)
             kwargs = {"authenticator": authenticator, "domain": config["domain"], "projects": config["projects"]}
-            labels_stream = Labels(**kwargs)
-            next(read_full_refresh(labels_stream), None)
-            # check projects
-            projects_stream = Projects(**kwargs)
-            projects = {project["key"] for project in read_full_refresh(projects_stream)}
-            unknown_projects = set(config["projects"]) - projects
-            if unknown_projects:
-                return False, "unknown project(s): " + ", ".join(unknown_projects)
+            issues_stream = Issues(**kwargs)
+            next(read_full_refresh(issues_stream), None)
             return True, None
         except (requests.exceptions.RequestException, ValidationError) as e:
             return False, e
